@@ -21,8 +21,8 @@ class PneumoniaNN(nn.Module):
         return self.fc(x)
 
 
-def train_neural_network(x_train, x_test, y_train, y_test):
-    x_train, x_test = torch.tensor(X_train.values, dtype=torch.float32), torch.tensor(X_test.values,
+def train_neural_network(X_train, X_test, y_train, y_test):
+    X_train, X_test = torch.tensor(X_train.values, dtype=torch.float32), torch.tensor(X_test.values,
                                                                                       dtype=torch.float32)
     y_train, y_test = torch.tensor(y_train.values, dtype=torch.float32).view(-1, 1), torch.tensor(y_test.values,
                                                                                                   dtype=torch.float32).view(
@@ -34,13 +34,13 @@ def train_neural_network(x_train, x_test, y_train, y_test):
 
     for epoch in range(50):
         optimizer.zero_grad()
-        outputs = model(x_train)
+        outputs = model(X_train)
         loss = criterion(outputs, y_train)
         loss.backward()
         optimizer.step()
 
     with torch.no_grad():
-        y_pred = model(x_test).round()
+        y_pred = model(X_test).round()
         accuracy = accuracy_score(y_test.numpy(), y_pred.numpy())
         print("神经网络准确率:", accuracy)
         print("分类报告:")
